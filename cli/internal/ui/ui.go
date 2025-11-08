@@ -60,17 +60,18 @@ func (u *UI) LogWriter() *logWriter {
 // -----------------------------------------------------------------------------
 
 type model struct {
-	public      string
-	local       string
-	status      string
-	dark        bool
-	requests    []requestEntry
-	logs        []string
-	maxLogs     int
-	maxRequests int
-	width       int
-	height      int
-	theme       theme
+	public        string
+	local         string
+	status        string
+	dark          bool
+	requests      []requestEntry
+	totalRequests int
+	logs          []string
+	maxLogs       int
+	maxRequests   int
+	width         int
+	height        int
+	theme         theme
 }
 
 type requestEntry struct {
@@ -110,6 +111,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case requestMsg:
 		entry := requestEntry{Method: msg.Method, Path: msg.Path, Status: msg.Status, Duration: msg.Duration}
 		m.requests = append(m.requests, entry)
+		m.totalRequests++
 		if len(m.requests) > m.maxRequests {
 			m.requests = m.requests[len(m.requests)-m.maxRequests:]
 		}
@@ -147,7 +149,7 @@ func (m model) View() string {
 		m.theme.line("Public URL", m.public),
 		m.theme.line("Local Addr", m.local),
 		m.theme.line("Status", m.status),
-		m.theme.line("Requests", m.theme.reqCount(len(m.requests))),
+		m.theme.line("Requests", m.theme.reqCount(m.totalRequests)),
 	)
 	headerView := m.theme.panel.Width(panelWidth).Render(hdr)
 

@@ -2,13 +2,13 @@
 
 Self-hosted developer tunnels inspired by ngrok, composed of a Go reverse proxy/control plane (`aporto-server`) and a cross-platform CLI (`aporto`).
 
-## Architecture Recap
+## Architecture
 
-- **Server binary** (deploys to your VPS)
+- **Server** (deploys to your VPS)
   - Control plane API on a private interface (`/v1/tunnels`) for issuing tunnel credentials.
   - Public HTTP(S) reverse proxy that routes `https://{subdomain}.{domain}` to the correct tunnel session.
   - SQLite metadata store for tunnel definitions and heartbeat timestamps.
-- **CLI binary** (runs on developer machines)
+- **CLI** (runs on developer machines)
   - Stores tunnel credentials locally (`~/.config/aporto/config.yaml`).
   - Opens a persistent WebSocket back to the control plane and proxies HTTP requests to a local service.
   - Handles retries, heartbeats, and structured logs.

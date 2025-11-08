@@ -1,0 +1,45 @@
+services:
+  aporto-server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    image: aporto/server:local
+    container_name: aporto-server
+    command: ["--config", "/etc/aporto/config.yaml"]
+    volumes:
+      - ./deploy/server-config.docker.yaml:/etc/aporto/config.yaml:ro
+      - ./deploy/authorized_keys:/etc/aporto/authorized_keys:ro
+      - server_data:/var/lib/aporto
+    networks:
+      - aporto
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    container_name: aporto-caddy
+    depends_on:
+      - aporto-server
+    environment:
+      ACME_EMAIL: ${ACME_EMAIL:-admin@example.com}
+      APORTO_CONTROL_DOMAIN: ${APORTO_CONTROL_DOMAIN:-control.example.com}
+      APORTO_TUNNEL_DOMAIN: ${APORTO_TUNNEL_DOMAIN:-apps.example.com}
+      APORTO_ON_DEMAND_CHECK: ${APORTO_ON_DEMAND_CHECK:-http://aporto-server:9090/v1/tls/allow}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - aporto
+    restart: unless-stopped
+
+volumes:
+  server_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  aporto:
+    driver: bridge

@@ -1,0 +1,15 @@
+domain: "apps.example.com"
+http_addr: "0.0.0.0:8080"
+https_addr: ""
+control_addr: "0.0.0.0:9090"
+data_dir: "/var/lib/aporto"
+db_path: "/var/lib/aporto/aporto.db"
+authorized_keys: "/etc/aporto/authorized_keys"
+admin_token: "replace-me"
+
+tls:
+  enable_autocert: false
+  email: ""
+  cache_dir: "/var/lib/aporto/autocert"
+  cert_file: ""
+  key_file: ""

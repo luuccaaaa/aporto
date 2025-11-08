@@ -1,0 +1,16 @@
+# Example configuration for aporto-server
+domain: "tunnels.example.com"
+http_addr: ":80"
+https_addr: ":443"
+control_addr: "127.0.0.1:9090"
+data_dir: "./data"
+db_path: "./data/aporto.db"
+authorized_keys: "./deploy/authorized_keys"
+admin_token: ""
+
+tls:
+  enable_autocert: true
+  email: "ops@example.com"
+  cache_dir: "./data/autocert-cache"
+  cert_file: ""
+  key_file: ""

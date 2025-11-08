@@ -1,0 +1,20 @@
+# Build artifacts
+bin/
+*.exe
+*.out
+
+# Go build cache overrides
+.cache/
+.gomodcache/
+**/.gocache/
+
+# Local configs & data
+server/config.yaml
+server/data/
+cli/.aporto/
+*.log
+
+# Editor/system noise
+.DS_Store
+.idea/
+.vscode/
